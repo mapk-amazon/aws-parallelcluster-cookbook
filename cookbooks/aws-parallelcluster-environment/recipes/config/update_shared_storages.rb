@@ -37,7 +37,7 @@ ruby_block "get storage to mount and unmount" do
     # get efs to unmount
     node.default['cluster']['unmount_efs_shared_dir_array'], node.default['cluster']['unmount_efs_fs_id_array'], = get_efs(UNMOUNT_ACTION)
     # get efs to mount
-    node.default['cluster']['mount_efs_shared_dir_array'], node.default['cluster']['mount_efs_fs_id_array'], node.default['cluster']['mount_efs_encryption_in_transit_array'], node.default['cluster']['mount_efs_iam_authorization_array'] = get_efs(MOUNT_ACTION)
+    node.default['cluster']['mount_efs_shared_dir_array'], node.default['cluster']['mount_efs_fs_id_array'], node.default['cluster']['mount_efs_encryption_in_transit_array'], node.default['cluster']['mount_efs_iam_authorization_array'], node.default['cluster']['mount_efs_access_point_array'] = get_efs(MOUNT_ACTION)
     # get fsx to unmount
     node.default['cluster']['unmount_fsx_fs_id_array'], node.default['cluster']['unmount_fsx_fs_type_array'], node.default['cluster']['unmount_fsx_shared_dir_array'], node.default['cluster']['unmount_fsx_dns_name_array'], node.default['cluster']['unmount_fsx_mount_name_array'], node.default['cluster']['unmount_fsx_volume_junction_path_array'] = get_fsx(UNMOUNT_ACTION)
     # get fsx to mount
