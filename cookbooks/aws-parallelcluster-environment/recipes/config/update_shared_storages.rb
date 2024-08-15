@@ -90,7 +90,7 @@ ruby_block "get storage to mount and unmount" do
         efs_access_point_id_array.push(String(storage["efs_access_point_id"]))
       end
     end
-    [shared_dir_array, efs_fs_id_array, efs_encryption_in_transit_array, efs_iam_authorization_array]
+    [shared_dir_array, efs_fs_id_array, efs_encryption_in_transit_array, efs_iam_authorization_array, efs_access_point_id_array]
   end
 
   def get_fsx(action)
