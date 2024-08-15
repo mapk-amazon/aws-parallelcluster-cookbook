@@ -78,6 +78,7 @@ ruby_block "get storage to mount and unmount" do
     efs_fs_id_array = []
     efs_encryption_in_transit_array = []
     efs_iam_authorization_array = []
+    efs_access_point_id_array = []
     unless in_shared_storages_mapping["efs"].nil?
       in_shared_storages_mapping["efs"].each do |storage|
         next unless not_in_shared_storages_mapping["efs"].nil? || !not_in_shared_storages_mapping["efs"].include?(storage)
@@ -86,6 +87,7 @@ ruby_block "get storage to mount and unmount" do
         # The EFS resource expects strings for these attributes, not booleans
         efs_encryption_in_transit_array.push(String(storage["efs_encryption_in_transit"]))
         efs_iam_authorization_array.push(String(storage["efs_iam_authorization"]))
+        efs_access_point_id_array.push(String(storage["efs_access_point_id"]))
       end
     end
     [shared_dir_array, efs_fs_id_array, efs_encryption_in_transit_array, efs_iam_authorization_array]
