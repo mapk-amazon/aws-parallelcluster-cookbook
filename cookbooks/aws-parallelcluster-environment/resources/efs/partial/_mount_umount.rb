@@ -42,22 +42,25 @@ action :mount do
     efs_shared_dir = "/#{efs_shared_dir}" unless efs_shared_dir.start_with?('/')
 
     # See reference of mount options: https://docs.aws.amazon.com/efs/latest/ug/automount-with-efs-mount-helper.html
-    mount_options = "_netdev,noresvport"
+    mount_options = ""
     if efs_encryption_in_transit == "true"
-      mount_options = "tls"
-      if efs_iam_authorization == "true"
-        mount_options += ",iam"
-      end
+      mount_options += "tls,"
+    end
+    if efs_iam_authorization == "true"
+      mount_options += "iam,"
     end
     if efs_access_point_id
-      if mount_options == "_netdev,noresvport"
-        mount_options = "tls,accesspoint=#{efs_access_point_id}"
-      elsif efs_encryption_in_transit == "true"
-        mount_options += "accesspoint=#{efs_access_point_id}"
-      else 
-        mount_options += "tls,accesspoint=#{efs_access_point_id}"
-      end
+      mount_options += "accesspoint=#{efs_access_point_id},"
     end
+    # If it ends on comma, delete it
+    if mount_options[-1] = ","
+      mount_options = mount_options[0, mount_options.length - 1]
+    end
+    # If no options are provided, set the default
+    if mount_options == "" 
+      mount_options = "_netdev,noresvport"
+    end
+    
     mount_point = efs_mount_point_array.nil? ? "/" : efs_mount_point_array[index]
 
     # Create the EFS shared directory
