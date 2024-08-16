@@ -42,7 +42,7 @@ action :mount do
     efs_shared_dir = "/#{efs_shared_dir}" unless efs_shared_dir.start_with?('/')
 
     # See reference of mount options: https://docs.aws.amazon.com/efs/latest/ug/automount-with-efs-mount-helper.html
-    mount_options = ""
+    mount_options = "_netdev,noresvport,"
     if efs_encryption_in_transit == "true"
       mount_options += "tls,"
     end
@@ -57,9 +57,6 @@ action :mount do
       mount_options = mount_options[0, mount_options.length - 1]
     end
     # If no options are provided, set the default
-    if mount_options == "" 
-      mount_options = "_netdev,noresvport"
-    end
     
     mount_point = efs_mount_point_array.nil? ? "/" : efs_mount_point_array[index]
 
