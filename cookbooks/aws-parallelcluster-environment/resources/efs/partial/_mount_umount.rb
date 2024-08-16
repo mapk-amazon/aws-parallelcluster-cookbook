@@ -52,7 +52,7 @@ action :mount do
     if efs_access_point_id
       if mount_options == "_netdev,noresvport"
         mount_options = "tls,accesspoint=#{efs_access_point_id}"
-      elsif efs_iam_authorization == "true"
+      elsif efs_encryption_in_transit == "true"
         mount_options += "accesspoint=#{efs_access_point_id}"
       else 
         mount_options += "tls,accesspoint=#{efs_access_point_id}"
