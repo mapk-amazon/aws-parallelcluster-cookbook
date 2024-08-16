@@ -42,20 +42,19 @@ action :mount do
     efs_shared_dir = "/#{efs_shared_dir}" unless efs_shared_dir.start_with?('/')
 
     # See reference of mount options: https://docs.aws.amazon.com/efs/latest/ug/automount-with-efs-mount-helper.html
-    mount_options = "_netdev,noresvport,"
+    mount_options = "_netdev,noresvport"
     if efs_encryption_in_transit == "true"
-      mount_options += "tls,"
+      mount_options += ",tls"
+      #iam authorization requires tls
+      if efs_iam_authorization == "true"
+        mount_options += ",iam"
+      end
+      #accesspoint requires tls
+      if efs_access_point_id
+        mount_options += ",accesspoint=#{efs_access_point_id},"
+      end
     end
-    if efs_iam_authorization == "true"
-      mount_options += "iam,"
-    end
-    if efs_access_point_id
-      mount_options += "accesspoint=#{efs_access_point_id},"
-    end
-    # If it ends on comma, delete it
-    if mount_options[-1] = ","
-      mount_options = mount_options[0, mount_options.length - 1]
-    end
+
     # If no options are provided, set the default
     
     mount_point = efs_mount_point_array.nil? ? "/" : efs_mount_point_array[index]
